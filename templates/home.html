@@ -2,15 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>"This is the landing page.</title>
+    <title>Welcome to 112 materials</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
 <body>
-<h1>Todo:</h1>
 
-<p> - Create login options <br/>
-    - Fix CSS <br/>
-    - Link to buying page
-</p>
+<div class="header">
+    <h1>Welcome to 112 materials!</h1>
+</div>
 
+<div class="outer">
+  <div class="middle">
+      <div class="inner">
+         <form method="post">
+             <label for="password" id="identity">Log in</label>
+             <input type="password" id="password" name="pass" placeholder="Enter password">
+             <input type="submit" id="submit" value="Submit">
+        </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>

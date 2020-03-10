@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buy.css') }}">
+</head>
+<body>
+
+<div class="header">
+  <h1>Order page</h1>
+</div>
+<div class="container">
+    <form>
+        <label for="linzen">Linzen</label>
+        <input type="number" id="linzen" name="linzen">
+        <label for="rijst">Rijst</label>
+        <input type="number" id="rijst" name="rijst">
+        <label for="mais">Mais</label>
+        <input type="number" id="mais" name="mais">
+        <input type="submit" id="bestel" name="bestel" value="Bestellen">
+    </form>
+</div>
+
+</body>
+</html>
