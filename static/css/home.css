@@ -43,17 +43,19 @@ body {
 
 #password {
     padding: 2px 5px;
+
 }
 #submit {
-    background: white;
-    border: 1px solid #1abc9c;
-    color: #1abc9c;
+    background: #1abc9c;
+    border: 2px solid white;
+    color: white;
     font-weight: bold;
     border-radius: 8px;
     padding: 3px 10px;
 }
 
 #password{
+    border: Opx solid black;
     border-radius: 18px;
 }
 label, input {
