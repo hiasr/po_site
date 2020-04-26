@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-import threading
-import socket
 import time
+import serial
 
 app = Flask(__name__)
-
+angle = 0
+speed = "slow"
+motor = 'false'
 
 @app.route("/", methods=["POST", "GET"])
 def home():
@@ -34,48 +35,38 @@ def process():
     return ""
 
 
+@app.route("/stream", methods=["GET", "POST"])
+def stream():
+    if request.method == "POST":
+        bluetoothSerial = serial.Serial("/dev/rfcomm0", baudrate=9600)
+        global angle, speed, motor
+        if request.form["angle"] != angle:
+            angle = request.form["angle"]
+            bluetoothSerial.write('B{}'.format(angle))
+            time.sleep(0.01)
 
-class Server:
-    def __init__(self):
-        self.conn = None
-        self.connected = ""
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.bind(("192.168.0.144", 1122))
-        x = threading.Thread(target=self.server_daemon, daemon=True)
-        x.start()
+        if request.form["speed"] != speed or request.form["motor"] != motor:
+            speed = request.form["speed"]
+            motor = request.form["motor"]
+            if motor == 'true':
+                motor_nb = 1
+            else:
+                motor_nb = 0
+            if speed == 'slow':
+                speed_nb = 40
+            elif speed == 'medium':
+                speed_nb = 100
+            else:
+                speed_nb = 255
+            bluetoothSerial.write('A{0}{1}'.format(motor_nb, speed_nb))
 
-    def server_daemon(self):
-        while 1:
-            self.connected = ""
-            self.s.listen()
-            print('Server listening')
-            self.conn, addr = self.s.accept()
-            with self.conn:
-                self.conn.send(b'Yeet')
-                self.connected = "Connected!"
-
-    def send_message(self, msg):
-        self.conn.send(msg.encode("utf-8"))
-
-    def get_connected(self):
-        return self.connected
+        return ""
+    else:
+        return render_template("stream.html")
 
 
-
-def server():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("192.168.0.144", 1122))
-        while 1:
-            s.listen()
-            conn, addr = s.accept()
-            render_template("buy.html", connected="Connected!")
-            with conn:
-                print('Connected')
-                time.sleep(10)
-                s.close()
-                break
 
 
 if __name__ == "__main__":
-    server = Server()
     app.run(debug=True, use_reloader=False)
+

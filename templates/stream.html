@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stream</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stream.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='js/stream.js')}}"></script>
+</head>
+<body>
+
+<div class="header">
+    <h1>Welcome to 112 materials!</h1>
+</div>
+<div id="padding1">
+
+</div>
+
+<div id="stream">
+    <label>Stream</label><br>
+    <img src="http://192.168.0.189:81/stream">
+</div>
+<div>
+    <form>
+        <label>Motor aan/uit</label>
+        <label class="switch">
+            <input id="switch1" type="checkbox">
+            <span class="slider round"></span>
+        </label>
+        <br>
+        <label for="speed">Selecteer snelheid motor: </label>
+        <select id="speed">
+            <option value="slow">Traag</option>
+            <option value="medium">Normaal</option>
+            <option value="fast">Snel</option>
+        </select>
+        <br><br>
+        <label for="angle">Geef hoek in voor servo: </label>
+        <input type="number" id="angle" min="0" max="120" value="0"><br><br>
+        <input type="submit" value="Update" id="submit">
+
+    </form>
+</div>
+
+</body>
+</html>
