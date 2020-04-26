@@ -6,11 +6,12 @@ app = Flask(__name__)
 angle = 0
 speed = "slow"
 motor = 'false'
+direction = 'false'
 
 @app.route("/", methods=["POST", "GET"])
 def home():
     if request.method == "POST" and request.form['pass'] == "pass":
-        return redirect(url_for("buy"))
+        return redirect(url_for("stream"))
     return render_template("home.html")
 
 
@@ -39,7 +40,7 @@ def process():
 def stream():
     if request.method == "POST":
         bluetoothSerial = serial.Serial("/dev/rfcomm0", baudrate=9600)
-        global angle, speed, motor
+        global angle, speed, motor, direction
         if request.form["angle"] != angle:
             angle = request.form["angle"]
             bluetoothSerial.write('B{}'.format(angle))
@@ -48,6 +49,12 @@ def stream():
         if request.form["speed"] != speed or request.form["motor"] != motor:
             speed = request.form["speed"]
             motor = request.form["motor"]
+            direction = request.form["direction"]
+
+            if direction == 'true':
+                direction_nb = 1
+            else:
+                direction_nb = 0
             if motor == 'true':
                 motor_nb = 1
             else:
@@ -58,7 +65,7 @@ def stream():
                 speed_nb = 100
             else:
                 speed_nb = 255
-            bluetoothSerial.write('A{0}{1}'.format(motor_nb, speed_nb))
+            bluetoothSerial.write('A{0}{1}{2}'.format(motor_nb, direction_nb, speed_nb))
 
         return ""
     else:
